@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Set up GH_PACKAGES_IMAGE_NAME environment variable
-        run: echo "GH_PACKAGES_IMAGE_NAME=ghcr.io/okapitechco/Talking_Face_Avatar:${{ github.event.inputs.image_tag }}" >> $GITHUB_ENV
+        run: echo "GH_PACKAGES_IMAGE_NAME=ghcr.io/okapitechco/talking_face_avatar:${{ github.event.inputs.image_tag }}" >> $GITHUB_ENV
 
       - name: Print GH_PACKAGES_IMAGE_NAME
         run: echo "GH_PACKAGES_IMAGE_NAME is $GH_PACKAGES_IMAGE_NAME"
