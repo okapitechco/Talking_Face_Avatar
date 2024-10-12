@@ -22,3 +22,4 @@ av
 python-dotenv==1.0.1
 boto3==1.34.118
 botocore==1.34.118
+realesrgan

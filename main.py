@@ -3,6 +3,7 @@ from time import strftime
 import os, sys, time
 from argparse import ArgumentParser
 from dotenv import load_dotenv
+from datetime import datetime
 
 
 from src.utils.preprocess import CropAndExtract
@@ -10,9 +11,9 @@ from src.test_audio2coeff import Audio2Coeff
 from src.facerender.animate import AnimateFromCoeff
 from src.generate_batch import get_data
 from src.generate_facerender_batch import get_facerender_data
-from utils import save_file_from_url
-from utils.s3_settings import get_s3_settings
-from utils.s3_utils import s3utils
+from src.utils.save_file_from_url import save_file_from_url
+from src.utils.s3_settings import get_s3_settings
+from src.utils.s3_utils import s3utils
 
 # Load environment variables from .env file
 load_dotenv()
@@ -110,7 +111,7 @@ def main(
         current_root_path, checkpoint_dir, "facevid2vid_00189-model.pth.tar"
     )
 
-    if args.preprocess == "full":
+    if preprocess == "full":
         mapping_checkpoint = os.path.join(
             current_root_path, checkpoint_dir, "mapping_00109-model.pth.tar"
         )
@@ -232,12 +233,23 @@ def main(
         preprocess=preprocess,
     )
 
+    absolute_path = os.path.abspath(return_path)
+
+    # Get the current date and time
+    current_time = datetime.now()
+
+    # Format the date to be human-readable (e.g., YYYY_MM_DD_HH_MM_SS)
+    formatted_time = current_time.strftime("%Y_%m_%d_%H_%M_%S")
+
+    # Use it in the filename
+    filename = f"ai_talking_avatars/{formatted_time}.mp4"
+
     public_video_url = s3utils_instance.file_upload(
-        return_path,
-        f"output_videos/ai_talking_avatars/{return_path}",
+        absolute_path,
+        filename,
     )
 
-    return public_video_url
+    return f"https://saas-blogs-bucket.s3.amazonaws.com/{filename}"
 
 
 # Update device based on cpu argument if device is not provided
@@ -256,8 +268,8 @@ main(
     input_yaw=None,  # the input yaw degree of the user
     input_pitch=None,  # the input pitch degree of the user
     input_roll=None,  # the input roll degree of the user
-    enhancer=None,  # Face enhancer, [gfpgan, RestoreFormer]
-    background_enhancer=None,  # background enhancer, [realesrgan]
+    enhancer="gfpgan",  # Face enhancer, [gfpgan, RestoreFormer]
+    background_enhancer="realesrgan",  # background enhancer, [realesrgan]
     cpu=False,  # use CPU instead of GPU
     face3dvis=False,  # generate 3d face and 3d landmarks
     still=False,  # can crop back to the original videos for the full body animation
