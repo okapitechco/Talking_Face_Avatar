@@ -1,4 +1,4 @@
-name: Docker Deepfake Generator AI Build
+name: Docker Talking Face Avatar Build
 
 on:
   workflow_dispatch:
