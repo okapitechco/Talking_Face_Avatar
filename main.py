@@ -252,6 +252,7 @@ def main(
     return f"https://saas-blogs-bucket.s3.amazonaws.com/{filename}"
 
 
+"""
 # Update device based on cpu argument if device is not provided
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -286,3 +287,4 @@ main(
     z_far=15.0,  # far clipping plane for renderer
     device=device,  # device to use (cpu or cuda)
 )
+"""
