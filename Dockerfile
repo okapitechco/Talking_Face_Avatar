@@ -53,7 +53,7 @@ RUN PIP_REQUIRE_HASHES= python3.11 -m pip install --upgrade pip && \
 ADD . .
 # Download models
 RUN bash scripts/download_models.sh
-RUN cd ./checkpoints && unzip ./BFM_Fitting.zip
+RUN cd ./checkpoints && unzip -o ./BFM_Fitting.zip
 
 # NOTE: The base image comes with multiple Python versions pre-installed.
 #       It is reccommended to specify the version of Python when running your code.
